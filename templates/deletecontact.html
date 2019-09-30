@@ -1,0 +1,183 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Delete contact</title>
+	<style type="text/css">
+	form{
+		width:300px;
+	}
+	.form-field{
+		width:100%;
+	}
+	input{
+		margin-bottom:20px;
+	}
+
+	
+
+	h2{
+ 		color: blue;
+ 		text-align: center;
+	}
+
+	p{
+ 		font-family: verdana;
+		font-size:25px;
+		color: blue;
+	}
+
+
+	</style>
+  </head>
+  <body	class="tdStyle">
+	<center><h2>DELETE CONTACT</h2></center>
+	<div class="container" style="padding-top:110px">
+	<form method="POST" id="formid3" action="contactbook5/">
+		{% csrf_token %}
+	<p>
+		Name<input type="text" id="txt_cname" name="txt_cname" class="form-field"> <br>
+		<input type="submit" id="btn_search" value="Search" style="background-color:rgb(60, 179, 70)"><br>
+		Name<input type="text" id="txt_newname" name="txt_newname" class="form-field" disabled> <br>
+		Number<input type="text" id="txt_newno" name="txt_newno" class="form-field" disabled> <br>
+		<input type="submit" id="btn_submit" value="Delete" style="background-color:red">
+		<input type="submit" id="btn_back" value="Home" style="background-color:green">
+	</p>
+	</form>
+	
+	</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  
+<!--  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+ crossorigin="anonymous"></script>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+
+<script type="text/javascript">
+
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name +'=')) {
+                         cookieValue =decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) ||
+/^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+/*
+$("#btn_search").click(function(e)
+{
+	e.preventDefault();
+	window.location.replace("contactbook3");
+});
+*/
+
+$("#btn_search").click(function(e){
+e.preventDefault();
+$.ajax({
+	url:"contactbook6/",
+	type:"post",
+	datatype:"json",
+	data:$("#formid3").serialize(),
+	
+	success:function(data)
+	{
+		$('#txt_cname').val("");		
+		if(data.status)
+		{
+			
+			$("#txt_newname").val(data.val1);
+			$("#txt_newno").val(data.val2);
+		}
+		else
+		{
+			alert("Contact does not exist");
+		}
+	},
+	error:function()
+	{
+		alert("Connection Failed");
+	}
+	});
+});
+
+
+$("#btn_submit").click(function(e){
+e.preventDefault();
+$.ajax({
+	url:"contactbook7/",
+	type:"post",
+	datatype:"json",
+	data:$("#formid3").serialize(),
+	
+	success:function(data)
+	{
+		$('#txt_newname').val("");
+		$('#txt_newno').val("");
+		//alert("hai");
+		if(data.status)
+		{
+			alert("Contact deleted successfully");	
+			//window.location.replace("contactbook4/");
+		
+		}
+		else
+		{
+			alert("Failed to receive");
+		}
+	},
+	error:function()
+	{
+		alert("Connection Failed");
+	}
+	});
+});
+
+
+$("#btn_back").click(function(e){
+e.preventDefault();
+window.location.replace("../../first/");
+});
+
+
+	
+</script>
+
+
+  </body>
+</html>

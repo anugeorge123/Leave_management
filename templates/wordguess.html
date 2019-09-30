@@ -1,0 +1,146 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+	<style type="text/css">
+
+	form{
+	width:300px;
+	}
+	.form-field{
+	width:100%;
+	}
+	input
+	{
+	margin-bottom:20px;
+	}
+	.tdStyle{ 
+		background-image: url("/static/images/69544377.jpg");
+		background-repeat:no-repeat;
+		color: white;
+		height: 650px;
+	}
+
+	h2{
+	color: blue;
+	text-align: center;
+	font-weight: bold;
+	}
+	p{
+	font-family: verdana;
+	font-size: 25px;
+	
+	color: blue;
+	}
+
+	</style>
+  </head>
+  <body class="tdStyle">
+	<center><h2>Word Guess</h2></center>
+	<div class="container" style="padding-top:110px">
+	<form method="POST" id="formid" action="wordguess/">
+		{% csrf_token %}
+		<p>		
+		Enter a character<input type="text" id="txt_ch" name="txt_ch" class="form-field" > <br>
+		<input type="submit" id="btn_submit" value="Submit" style="background-color:rgb(60, 179, 70);" >
+		</p>
+	</form>
+	<textarea id="textarea"></textarea>
+	</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+ crossorigin="anonymous"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript">
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name +'=')) {
+                         cookieValue =decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) ||
+/^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+$("#btn_submit").click(function(e){
+e.preventDefault();
+$.ajax({
+	url:"ajaxpage1/",
+	type:"post",
+	datatype:"json",
+	data:$("#formid").serialize(),
+	success:function(data)
+	{
+		$('#txt_ch').val("");
+		if(data.status)
+		{
+			
+			if(data.right==-1)
+			{	
+				alert("wrong  "+data.wrong);
+				if(data.wrong==5)
+				{
+				alert("Game Over");
+				window.location.replace("incorrect");
+
+				}
+			}
+			else
+			{
+				
+				if(data.right==data.leng)
+				{
+				
+				window.location.replace("correct");
+	
+				}
+			}
+			
+			$("#textarea").val(data.val);
+		}
+		else
+		{
+			alert("Failed to receive");
+		}
+	},
+	error:function()
+	{
+	alert("Connection Failed");
+	}
+	});
+});
+	
+</script>
+  </body>
+</html>

@@ -1,0 +1,198 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>login</title>
+	<style type="text/css">
+	form{
+		width:300px;
+	}
+	.form-field{
+		width:100%;
+	}
+	input{
+		margin-bottom:20px;
+	}
+
+	
+
+	h2{
+ 		color: blue;
+ 		text-align: center;
+	}
+
+	p{
+ 		font-family: verdana;
+		font-size:25px;
+		color: blue;
+	}
+	
+
+
+	.split {
+ 	 height: 100%;
+ 	 width: 50%;
+ 	 position: fixed;
+ 	 z-index: 1;
+ 	 top: 0;
+ 	 overflow-x: hidden;
+ 	 padding-top: 20px;
+	}
+	
+	.left {
+  	left: 0;
+  	
+	}
+
+	.right {
+  	right: 0;
+  	
+	}
+
+	.centered {
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+  	
+	}
+
+
+	</style>
+  </head>
+  <body	class="tdStyle">
+	<center><h2>Sign Up</h2></center>
+	<div class="container" style="padding-top:110px"> 
+	<div class="split left">
+ 	<div class="centered">
+	<form method="POST" id="formid1" >
+		{% csrf_token %}
+	<p>
+	<!-- <select id="select_id" name="select"> 
+ 	 <option value="">Employee Name</option>
+	    
+	 -->
+
+ 	
+	</select> <br/><br/>
+
+		Designation<input type="text" id="txt_des" name="txt_des" class="form-field"> 
+		Username<input type="text" id="txt_uname" name="txt_uname" class="form-field"> <br>
+		Password<input type="password" id="txt_pwd" name="txt_pwd" class="form-field"> <br>
+		Confirm Password<input type="password" id="txt_cpwd" name="txt_cpwd" class="form-field"> <br>
+				
+		<input type="submit" id="btn_submit" value="Submit" style="background-color:rgb(60, 179, 70)">
+	<!--	<input type="reset" id="btn_cancel" value="Cancel" style="background-color:red"> -->
+		<a href="../../firstpage/">Login</a>
+	</p>	
+
+
+
+
+	</form>
+	</div>
+	</div>
+	<div class="split right">
+ 	<div class="centered">
+<!--	<textarea id="textarea" rows="15" cols="30"></textarea> -->
+	</div>
+	</div>
+	</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+
+
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+ crossorigin="anonymous"></script>
+
+
+<!--
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> 
+-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+
+
+<script type="text/javascript">
+
+
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name +'=')) {
+                         cookieValue =decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) ||
+/^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
+
+
+
+$("#btn_submit").click(function(e){
+
+
+e.preventDefault();
+$.ajax({
+	url:"signup/",
+	type:"post",
+	datatype:"json",
+	data:$("#formid1").serialize(),
+	
+	success:function(data)
+	{
+		//alert("in success fn");
+	
+
+		if(data.status)
+		{
+			alert("Data saved successfully! ");	
+			/*$("#txt_uname").val(data.val2);
+			$("#txt_ltype").val(data.val3);
+			$("#txt_days").val(data.val4);
+			*/
+			
+		}
+		else
+		{
+			alert("Failed to receive");
+		}
+	},
+	error:function()
+	{
+	alert("Connection Failed");
+	}
+	});
+});
+
+
+	
+</script>
+
+  </body>
+</html>
